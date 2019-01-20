@@ -1,0 +1,24 @@
+jleone:~/workspace $ mkdir test1
+jleone:~/workspace $ mkdir test2
+jleone:~/workspace $ cd test1
+jleone:~/workspace/test1 $ mkdir test1a
+jleone:~/workspace/test1 $ mkdir test1b
+jleone:~/workspace/test1 $ cd ../test2
+jleone:~/workspace/test2 $ mkdir test2a
+jleone:~/workspace/test2 $ mkdir test2b
+jleone:~/workspace/test2 $ cd test2b
+jleone:~/workspace/test2/test2b $ pwd
+/home/ubuntu/workspace/test2/test2b
+jleone:~/workspace/test2/test2b $ cd ~
+jleone:~ $ cd workspace/
+jleone:~/workspace $ mkdir intro
+jleone:~/workspace $ cd intro/
+jleone:~/workspace/intro $ mkdir os
+jleone:~/workspace/intro $ cd os
+jleone:~/workspace/intro/os $ mkdir hw
+jleone:~/workspace/intro/os $ mkdir labs
+jleone:~/workspace/intro/os $ cd labs/
+jleone:~/workspace/intro/os/labs $ mkdir lab01
+jleone:~/workspace/intro/os/labs $ cd lab01/
+jleone:~/workspace/intro/os/labs/lab01 $ vim folders.txt
+jleone:~/workspace/intro/os/labs/lab01 $
