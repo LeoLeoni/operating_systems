@@ -13,6 +13,7 @@ struct node {
 
 struct node root;
 struct node *here = &root;
+struct node *visited[10];
 
 int check(int ppid);
 
@@ -29,6 +30,8 @@ int main() {
 	root.size = 0;
 	root.depth = 0;
 	root.parent = NULL;
+	visited[0] = &root;
+	int visitdepth = 1;
 
 	fgets(name, sizeof(name), stdin);
 	
@@ -40,9 +43,11 @@ int main() {
 			here = here->children[check(ppid)];
 		}
 			
-			while (ppid != here->pid && (here->parent)) {
-				printf("%s", "backing up\n");
-				here = here->parent;
+			while (ppid != here->pid && visitdepth !=0) {
+				//printf("%s", "backing up\n");
+				visited[visitdepth] = NULL;
+				
+				visitdepth--;here = visited[visitdepth];
 			}
 			struct node newNode;
 			newNode.pid = pid;
@@ -51,10 +56,11 @@ int main() {
 			newNode.parent = here;
 			newNode.depth = here->depth+1;
 			newNode.size = 0;
-			
 			here->children[here->size] = &newNode;
+			visited[visitdepth] = &newNode;
 			here->size++;
 	
+		for (int i=0;i<newNode.depth;i++) printf("%s", ">");
 		printf("%d %d %s", here->pid, here->ppid, name);
 		here = here->children[here->size-1];
 	}
