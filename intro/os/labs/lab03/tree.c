@@ -4,16 +4,14 @@
 struct node {
 	int pid;
 	int ppid;
-	int ppid_index;
 	struct node *children[10];
-	struct node *parent;
 	int size;
 	int depth;
 };
 
 struct node root;
 struct node *here = &root;
-struct node *visited[10];
+struct node *visited[50];
 
 int check(int ppid);
 
@@ -29,7 +27,6 @@ int main() {
 	root.ppid = 0;
 	root.size = 0;
 	root.depth = 0;
-	root.parent = NULL;
 	visited[0] = &root;
 	int visitdepth = 1;
 
@@ -42,27 +39,27 @@ int main() {
 		if (check(ppid) != 1000) {
 			here = here->children[check(ppid)];
 		}
-			
+			//back up as needed
 			while (ppid != here->pid && visitdepth !=0) {
-				//printf("%s", "backing up\n");
 				visited[visitdepth] = NULL;
-				
-				visitdepth--;here = visited[visitdepth];
+				visitdepth--;
+				//here->depth--;
+				here = visited[visitdepth];
 			}
 			struct node newNode;
 			newNode.pid = pid;
 			newNode.ppid = ppid;
-			newNode.ppid_index = here->size;
-			newNode.parent = here;
 			newNode.depth = here->depth+1;
 			newNode.size = 0;
 			here->children[here->size] = &newNode;
 			visited[visitdepth] = &newNode;
+			visitdepth++;
 			here->size++;
 	
+		//this is the part that prints the "tree"
 		for (int i=0;i<newNode.depth;i++) printf("%s", ">");
-		printf("%d %d %s", here->pid, here->ppid, name);
-		here = here->children[here->size-1];
+		printf("%d %s", here->pid, name);
+		//here = here->children[here->size-1];
 	}
 
 }
