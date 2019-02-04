@@ -1,0 +1,13 @@
+//one_path.txt
+
+pid 1: ./one 
+  fork 1: cpid 2 
+  wait 
+
+pid 2: fork 1 
+  print: gen=1:fork=1:pid=2:ppid=1 
+  return 
+
+pid 1: wait 
+  print: gen=0:fork=0:pid=1:ppid=BASH
+  return
