@@ -1,0 +1,10 @@
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\bin\Debug\ErrorCheckStudentInfo.exe.config
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\bin\Debug\ErrorCheckStudentInfo.exe
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\bin\Debug\ErrorCheckStudentInfo.pdb
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.csprojAssemblyReference.cache
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.Form1.resources
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.Properties.Resources.resources
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.csproj.GenerateResource.cache
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.csproj.CoreCompileInputs.cache
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.exe
+C:\Users\Justin\Documents\cmpsc302lol\ErrorCheckStudentInfo\ErrorCheckStudentInfo\obj\Debug\ErrorCheckStudentInfo.pdb
