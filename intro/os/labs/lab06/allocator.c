@@ -1,9 +1,8 @@
 #include <stdio.h>
 #include <stdlib.h>
 
-void malloc1();
-void free();
-void coalesce();
+void alloc();
+void free(); //optional
 void view(); //view choose
 int choose(); //handles user choice
 
@@ -31,16 +30,18 @@ int main(int argc, char* argv[]) {
     switch (choice) {
 
         case 1: //malloc
+            alloc();
+	        break;
+
+        case 2: //free optional
+            free();
             break;
 
-        case 2: //free
-            break;
-
-        case 3: //coalesce
+        case 3: //coalesce optional
             break;
 
         case 4: //view
-            //view();
+            view();
             break;
 
         case 5: //quit
@@ -48,7 +49,8 @@ int main(int argc, char* argv[]) {
             break;
 
         default: //quit
-            return 0;
+            printf("%s", "Invalid input\n");
+	    return 0;
             break;
     }
 
@@ -57,15 +59,26 @@ int main(int argc, char* argv[]) {
     return 0;
 }
  
-void malloc1() {
+void alloc() {
+    // allocate memory from within the heap for N bytes
+
+    printf("%s", "ENTER THE SIZE IN BYTES: ");
+    int size = 0;
+    scanf("%d", &size);
 
     //struct node_t current = head;
     struct node_t current = NULL;
     current = (struct node_t*)malloc(sizeof(struct node_t));
 
 }
+
+void free() {
+}
+
 void view() {
 
+
+    printf("%s", "Traversing linked list of free regions...\n\n");
     //struct node_t current = head;
     struct node_t current = NULL;
     current = (struct node_t*)malloc(sizeof(struct node_t));
