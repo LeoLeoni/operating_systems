@@ -3,7 +3,7 @@
 #include <sys/mman.h>
 
 void initHeap(int size);
-void mallocator(int req);
+void malloc1(int req);
 //void free(); //optional
 void view(); //view choice
 int choose(); //handles user choice
@@ -26,18 +26,25 @@ struct header_t *head = NULL;
 
 int main(int argc, char* argv[]) {
 
+    if(argc != 2) {
+        printf("%s", "Invalid arguments. Use size as an argument\n");
+        return 0;
+    }
     int heapSize = atoi(argv[1]);
+    nodeHead = malloc(heapSize);
     int heap = 0; //what is this?
-    //initHeap(heapSize);
 
-    printf("%s %i %s %i", "\nheap: ", heap, ", 0, size=", heapSize);
+    printf("%s %i %s %i", "\nheap: ", &nodeHead, ", 0, size=", heapSize);
     
     int choice = choose();
 
     switch (choice) {
 
-        case 1: //mallocator
-            mallocator(sizeof(node_t));
+        case 1: //malloc
+            printf("%s", "ENTER THE SIZE IN BYTES: ");
+            int size;
+            scanf("%d", &size);
+         malloc1(size);
 	        break;
 
         case 2: //free optional
@@ -75,12 +82,8 @@ void initHeap(int size) {
 }*/
 
 
-void mallocator(int req) {
+void malloc1(int req) {
     // allocate memory from within the heap for N bytes
-
-    printf("%s", "ENTER THE SIZE IN BYTES: ");
-    int size = 0;
-    scanf("%d", &size);
 
     node_t *current = nodeHead;
 
@@ -94,10 +97,11 @@ void mallocator(int req) {
     node_t *old = NULL;
     old->next = current->next;
     old->size = current->size;
+
+    //build new header
+    header_t *newHead = malloc(req);
     
-    malloc(size);
     current += req+4; //move pointer
-    //new node_t = {size = old->size - req - 4, next = old->next} -> &current;
     
 }
 
@@ -121,7 +125,7 @@ void view() {
 
 int choose(){
 
-    printf("%s", "\nALLOCATOR: ENTER AN OPTION\n  1. mallocator\n  2. free\n  3. coalesce\n  4. view\n  5. quit\nCHOICE: ");
+    printf("%s", "\n\nALLOCATOR: ENTER AN OPTION\n  1. malloc1\n  2. free\n  3. coalesce\n  4. view\n  5. quit\nCHOICE: ");
     int c;
     scanf("%d", &c);
     return c;
