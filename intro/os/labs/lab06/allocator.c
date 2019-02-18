@@ -82,7 +82,7 @@ void mallocator(int req) {
     int size = 0;
     scanf("%d", &size);
 
-    struct node_t *current = nodeHead;
+    node_t *current = nodeHead;
 
     while (current->size < req+4) {
         current = current->next;
@@ -91,29 +91,25 @@ void mallocator(int req) {
             break;
         }
     }
-    struct node_t *old = NULL;
+    node_t *old = NULL;
     old->next = current->next;
     old->size = current->size;
-
-    /*
-    new header_t = {size = req} -> &current;
-
+    
+    malloc(size);
     current += req+4; //move pointer
-
-    new node_t = {size = old->size - req - 4, next = old->next} -> &current;
-    */
+    //new node_t = {size = old->size - req - 4, next = old->next} -> &current;
+    
 }
 
 //void free() {}
 
-/*
+
 void view() {
 
 
     printf("%s", "Traversing linked list of free regions...\n\n");
-    //struct node_t current = head;
-    struct node_t current = NULL;
-    current = (struct node_t*)mallocator(sizeof(struct node_t));
+    node_t *current = nodeHead;
+
     while (current != NULL) {
 
         //calculate overhead info
@@ -121,7 +117,7 @@ void view() {
 
         current = current->next;
     }
-}*/
+}
 
 int choose(){
 
