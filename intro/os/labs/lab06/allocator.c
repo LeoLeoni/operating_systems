@@ -12,17 +12,15 @@ int choose(); //handles user choice
 typedef struct __node_t {
 
     int size;
+    int free;
     struct __node_t *next;
 } node_t;
 
-typedef struct __header_t {
 
-    int size;  //size of allocated space 
-    int magic; //unique identifier; NOT USED IN THIS ASSIGNMENT 
-} header_t;
+struct node_t *head = NULL;
 
-struct node_t *nodeHead = NULL;
-struct header_t *head = NULL;
+int offset = 0;
+int count = 0;
 
 int main(int argc, char* argv[]) {
 
@@ -31,10 +29,10 @@ int main(int argc, char* argv[]) {
         return 0;
     }
     int heapSize = atoi(argv[1]);
-    nodeHead = malloc(heapSize);
+    head = malloc(heapSize);
     int heap = 0; //what is this?
 
-    printf("%s %i %s %i", "\nheap: ", &nodeHead, ", 0, size=", heapSize);
+    printf("%s %i %s %i", "\nheap: ", &head, ", 0, size=", heapSize);
     
     int choice = choose();
 
@@ -44,14 +42,14 @@ int main(int argc, char* argv[]) {
             printf("%s", "ENTER THE SIZE IN BYTES: ");
             int size;
             scanf("%d", &size);
-         malloc1(size);
+            malloc1(size);
 	        break;
 
-        case 2: //free optional
+        case 2: //free
             //free();
             break;
 
-        case 3: //coalesce optional
+        case 3: //coalesce
             break;
 
         case 4: //view
@@ -85,7 +83,14 @@ void initHeap(int size) {
 void malloc1(int req) {
     // allocate memory from within the heap for N bytes
 
-    node_t *current = nodeHead;
+    offset += 4;
+    count += 4;
+
+    printf("ptr: %p, %i, %i", &head + count, offset, req);
+    offset += req;
+
+    
+    node_t *current = head;
 
     while (current->size < req+4) {
         current = current->next;
@@ -99,10 +104,8 @@ void malloc1(int req) {
     old->size = current->size;
 
     //build new header
-    header_t *newHead = malloc(req);
     
     current += req+4; //move pointer
-    
 }
 
 //void free() {}
@@ -110,9 +113,8 @@ void malloc1(int req) {
 
 void view() {
 
-
     printf("%s", "Traversing linked list of free regions...\n\n");
-    node_t *current = nodeHead;
+    node_t *current = head;
 
     while (current != NULL) {
 
@@ -125,7 +127,7 @@ void view() {
 
 int choose(){
 
-    printf("%s", "\n\nALLOCATOR: ENTER AN OPTION\n  1. malloc1\n  2. free\n  3. coalesce\n  4. view\n  5. quit\nCHOICE: ");
+    printf("%s", "\n\nALLOCATOR: ENTER AN OPTION\n  1. malloc\n  2. free\n  3. coalesce\n  4. view\n  5. quit\nCHOICE: ");
     int c;
     scanf("%d", &c);
     return c;
