@@ -83,12 +83,23 @@ int main(int argc, char* argv[]) {
 
 void coalesce() {
     node_t *current = head;
-    while(current->next != NULL) {
+
+    //there is probably an easier way to do this
+    if (current->next != NULL) {
         if (current->free == 1 && current->next->free == 1) {
             current->size += current->next->size;
-            current->next = current->next->next;
+            if (current->next->next==NULL) {current->next = NULL;}
+            else {current->next = current->next->next;}
         }
+    }
+
+    while(current->next != NULL) {
         current = current->next;
+        if (current->free == 1 && current->next->free == 1) {
+            current->size += current->next->size;
+            if (current->next->next==NULL) {current->next = NULL;}
+            else {current->next = current->next->next;}
+        }
     }
 }
 
