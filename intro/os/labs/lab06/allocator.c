@@ -3,9 +3,10 @@
 #include <sys/mman.h>
 
 void initHeap(int size);
-void malloc1(int req);
-//void free(); //optional
-void view(); //view choice
+int malloc1(int req);
+void free1();
+void view(int usedRegions); //view choice
+void coalesce();
 int choose(); //handles user choice
 
 
@@ -17,10 +18,8 @@ typedef struct __node_t {
 } node_t;
 
 
-struct node_t *head = NULL;
+node_t *head = NULL;
 
-int offset = 0;
-int count = 0;
 
 int main(int argc, char* argv[]) {
 
@@ -30,99 +29,161 @@ int main(int argc, char* argv[]) {
     }
     int heapSize = atoi(argv[1]);
     head = malloc(heapSize);
-    int heap = 0; //what is this?
+    head->size = heapSize;
+    head->free = 1; 
 
-    printf("%s %i %s %i", "\nheap: ", &head, ", 0, size=", heapSize);
-    
-    int choice = choose();
+    int usedSpace = 0;
+    int usedRegions = 0;
+    int freeRegions= 1;
 
-    switch (choice) {
 
-        case 1: //malloc
-            printf("%s", "ENTER THE SIZE IN BYTES: ");
-            int size;
-            scanf("%d", &size);
-            malloc1(size);
-	        break;
+    while (1) {
+        printf("%s %i %s %i", "\nheap: ", &head, ", 0, size=", heapSize);
+        
+        int choice = choose();
 
-        case 2: //free
-            //free();
-            break;
+        switch (choice) {
 
-        case 3: //coalesce
-            break;
+            case 1: //malloc
+                printf("%s", "ENTER THE SIZE IN BYTES: ");
+                int size;
+                scanf("%d", &size);
+                int mal = malloc1(size);
+                if (mal) {
+                    usedSpace += size + 16;
+                    usedRegions++;
+                }
+                break;
 
-        case 4: //view
-            //view();
-            break;
+            case 2: //free
+                free1();
+                break;
 
-        case 5: //quit
+            case 3: //coalesce
+                coalesce();
+                break;
+
+            case 4: //view
+                view(usedRegions);
+                break;
+
+            case 5: //quit
+                return 0;
+                break;
+
+            default: //quit
+                printf("%s", "Invalid input\n");
             return 0;
-            break;
-
-        default: //quit
-            printf("%s", "Invalid input\n");
-	    return 0;
-            break;
+                break;
+        }
     }
-
-
 
     return 0;
 }
- 
-/*
-void initHeap(int size) {
-    //create an empty heap with 4KB of size
-    nodeHead = mmap(NULL, 4096, PROT_READ|PROT_WRITE, MAP_ANON|MAP_PRIVATE, -1, 0);
-    nodeHead->size = 4096 - sizeof(node_t);
-    nodeHead->next = NULL;
-}*/
+
+void coalesce() {
+    node_t *current = head;
+    while(current->next != NULL) {
+        if (current->free == 1 && current->next->free == 1) {
+            current->size += current->next->size;
+            current->next = current->next->next;
+        }
+        current = current->next;
+    }
+}
 
 
-void malloc1(int req) {
+int malloc1(int req) {
     // allocate memory from within the heap for N bytes
 
-    offset += 4;
-    count += 4;
-
-    printf("ptr: %p, %i, %i", &head + count, offset, req);
-    offset += req;
-
     
-    node_t *current = head;
+    node_t *currentent = head;
 
-    while (current->size < req+4) {
-        current = current->next;
-        if (current==NULL) {
+    while (currentent->size < req+4 && currentent->free==1) {
+        currentent = currentent->next;
+        if (currentent==NULL) {
             printf("%s", "Error");
             break;
         }
     }
-    node_t *old = NULL;
-    old->next = current->next;
-    old->size = current->size;
+
+    currentent->size = currentent->size - req - 16;
+
+    //create node for used region
+    node_t *prev = malloc(sizeof(node_t));
+    prev->next = NULL;
+    prev->size = req;
+    prev->free = 0;
+
 
     //build new header
-    
-    current += req+4; //move pointer
+    while(currentent->next != NULL) {
+        currentent = currentent->next;
+    }
+    currentent -> next = prev;
+
+
+    //hold the old data
+    node_t * old = malloc(sizeof(node_t));
+    old = currentent;
+    currentent += req + 4; //increment pointer
+    //head = currentent;
+    return 1;
 }
 
-//void free() {}
+void free1() {
 
+    node_t * currentent = head;
+    int offset = 0;
+    int nodeCount = 0;
 
-void view() {
+    //traverses the whole list
+    while (currentent != NULL) {
 
-    printf("%s", "Traversing linked list of free regions...\n\n");
-    node_t *current = head;
+        //we only want the used regions
+        if(currentent->free == 0) {
 
-    while (current != NULL) {
-
-        //calculate overhead info
-        //print info
-
-        current = current->next;
+            printf("%d.vAddr=%p, offset=%d, size=%d, free=%d, \n", nodeCount, currentent, offset, currentent->size, currentent->free);
+            offset+= (currentent->size + 16); 
+            nodeCount++;
+        }
+        currentent = currentent->next;
     }
+
+
+    printf("SELECT NODE TO FREE: ");
+    int choice;
+    scanf("%d",&choice);
+
+    currentent = head;
+    for (int i=0; i<=choice; i++) {
+
+        currentent = currentent->next;
+    }
+    currentent->free = 1;
+}
+
+
+void view(int usedRegions) {
+
+
+    printf("%s", "Traversing linked list of free regions...\n");
+
+    node_t * currentent = head;
+    int offset = 0;
+    int nodeCount = 0;
+
+    //traverses the whole list
+    while (currentent != NULL) {
+
+        printf("%d.vAddr=%p, offset=%d, size=%d, free=%d, \n", nodeCount, currentent, offset, currentent->size, currentent->free);
+        offset+= (currentent->size + 16); 
+        nodeCount++;
+    
+        currentent = currentent->next;
+    }
+
+
 }
 
 int choose(){
