@@ -2,10 +2,9 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <unistd.h>
-#define SIZE 100
+#define BUF_SIZE 100
 
-char buf[SIZE];
-
+char buf[BUF_SIZE];
 void *printStuff()
 {
 	int bufSize = sizeof(buf)/sizeof(char);
@@ -25,16 +24,23 @@ void *printStuff()
 	}
 }
 
+void *processInput()
+{
+	gets(buf);
+}
 int main(int argc, char* argv[])
 {
 	//have the main thread process input and the spawned thread process output
 	gets(buf);
 	pthread_t printThread;
+	pthread_t inputThread;
 
-	while(1) {
+	while (1)
+	{
+		pthread_create(&inputThread, NULL, processInput, NULL);
+		pthread_join(inputThread, NULL);
 		pthread_create(&printThread, NULL, printStuff, NULL);
-		gets(buf);
-		pthread_join(printThread, NULL);
+		//pthread_join(printThread, NULL);
 	}
 	return 0;
 }
