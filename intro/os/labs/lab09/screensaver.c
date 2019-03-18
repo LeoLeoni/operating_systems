@@ -11,7 +11,6 @@ void *printStuff()
 	while (1)
 	{
 		//print the things, then wait before printing again
-		printf("%c", '\n');
 		for(int hiddenCount = 0; buf[hiddenCount]; hiddenCount++)
 		{
 			for(int wordCount = 0; buf[wordCount]; wordCount++)
