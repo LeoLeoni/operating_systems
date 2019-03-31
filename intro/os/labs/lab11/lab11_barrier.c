@@ -3,7 +3,7 @@
 #include <stdlib.h>
 #include <unistd.h>
 #include <pthread.h>
-#inlcude <semaphore.h>
+#include <semaphore.h>
 
 // If done correctly, each child should print their "before" message
 // before either prints their "after" message. Test by adding sleep(1)
@@ -13,7 +13,11 @@
 // other integers to track things.
 
 typedef struct __barrier_t {
-    // add semaphores and other information here
+    //add sems here
+    sem_t mutex;
+    sem_t turnstile;
+    int count;
+    int num;
 } barrier_t;
 
 
@@ -22,10 +26,23 @@ barrier_t b;
 
 void barrier_init(barrier_t *b, int num_threads) {
     // initialization code goes here
+    sem_init(&b->mutex, 0, num_threads);
+    sem_init(&b->turnstile, 0, 0);
+    b->count = 0;
+    b->num = num_threads;
 }
 
 void barrier(barrier_t *b) {
     // barrier code goes here
+    
+    sem_wait(&b->mutex);
+    b->count++;
+    sem_post(&b->mutex);
+    
+    if (b->count == b->num) sem_post(&b->turnstile);
+    
+    sem_wait(&b->turnstile);
+    sem_post(&b->turnstile);
 }
 
 //
@@ -48,7 +65,7 @@ void *child(void *arg) {
 // threads you wish to create (1 or more)
 int main(int argc, char *argv[]) {
     assert(argc == 2);
-    int num_threads = atoi(argv[1]);
+    int num_threads = atoi(argv[1]); //redeclare?
     assert(num_threads > 0);
 
     pthread_t p[num_threads];
