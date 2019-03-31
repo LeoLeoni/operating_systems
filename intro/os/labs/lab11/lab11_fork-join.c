@@ -2,7 +2,7 @@
 #include <unistd.h>
 #include <pthread.h>
 #include <pthread.h>
-#inlcude <semaphore.h>
+#include <semaphore.h>
 
 sem_t s; 
 
@@ -14,9 +14,9 @@ void *child(void *arg) {
 }
 
 int main(int argc, char *argv[]) {
+    sem_init(&s, 1, 0);
     pthread_t p;
     printf("parent: begin\n");
-    sem_init(&s, 0, 1);
     pthread_create(&p, NULL, child, NULL);
     // use semaphore here
     sem_wait(&s);
