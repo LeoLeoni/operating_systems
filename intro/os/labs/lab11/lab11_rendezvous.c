@@ -1,3 +1,4 @@
+//gcc -o rendezvous lab11_rendezvous.c -pthread 
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>

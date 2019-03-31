@@ -1,3 +1,4 @@
+//gcc -o barrier lab11_barrier.c -pthread -std=c99
 #include <assert.h>
 #include <stdio.h>
 #include <stdlib.h>

@@ -1,3 +1,4 @@
+//gcc -o fork lab11_fork-join.c -pthread
 #include <stdio.h>
 #include <unistd.h>
 #include <pthread.h>
