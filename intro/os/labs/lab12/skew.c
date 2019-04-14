@@ -100,6 +100,6 @@ int main(int argc, char *argv[])
 		}
 		linecount++;	 
 	}
-	printf("\n")
+	printf("\n");
 	return 0;
 }
